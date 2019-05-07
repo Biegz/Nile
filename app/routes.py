@@ -28,7 +28,7 @@ def items():
 @app.route('/item/<id>')
 def itemInfo(id):
 	with connection.cursor() as cursor:
-		sql = "SELECT ID, ModelNumber, Price, Thumbnail, Description, RecommendedItemID FROM Item WHERE ID = %s"
+		sql = "SELECT ID, Seller, ModelNumber, Price, Thumbnail, Description, RecommendedItemID FROM Item WHERE ID = %s"
 		cursor.execute(sql,(id))
 		result = cursor.fetchall()
 	return render_template('itemInfo.html', itemInfo = result)

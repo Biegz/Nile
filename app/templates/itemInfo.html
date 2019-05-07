@@ -53,6 +53,34 @@
     </nav>
 
 
+    <!-- HTML for below navbar -->
+    {% for row in itemInfo %}
+    <div class="row" style="padding: 25px 25px 25px 65px">
+      <div class="col">
+        <img src="{{ row['Thumbnail'] }}">
+      </div>
+      <div class="col">
+        <b><font size="6">{{ row['ModelNumber'] }}</font></b> 
+        <br>by {{ row['Seller'] }}
+        <br>  <span class="fa fa-star checked"></span>
+        <span class="fa fa-star checked"></span>
+        <span class="fa fa-star checked"></span>
+        <span class="fa fa-star"></span>
+        <span class="fa fa-star"></span>
+        <font size="2" style="margin-left: 15px">248 reviews</font>
+        <br><br><font size="2">Price: </font><font color="red">${{ row['Price'] }}</font>
+        <br><br><br> {{ row['Description'] }}
+      </div>
+      <div class="col">
+        <div class="card" ">
+          <div class="card-body"> <font color="red">${{ row['Price'] }}</font> 
+            <a href="#" class="btn btn-primary" style="margin-left: 45px; background-color: #5d876e; border-color: #35443b">Add to Cart</a>
+            <br><font color="green">In Stock.</font>
+          </div>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
 
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
@@ -64,6 +92,36 @@
 </html>
 
 <style>
+
+
+.img-zoom-container {
+  position: relative;
+}
+
+.img-zoom-lens {
+  position: absolute;
+  border: 1px solid #d4d4d4;
+  /*set the size of the lens:*/
+  width: 40px;
+  height: 40px;
+}
+
+.img-zoom-result {
+  border: 1px solid #d4d4d4;
+  /*set the size of the result div:*/
+  width: 300px;
+  height: 300px;
+}
+
+.checked {
+  color: orange;
+}
+
+
+
+
+
+
 
 .body{
   background-color: #e2e2e2;

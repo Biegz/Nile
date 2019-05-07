@@ -1,0 +1,156 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
+
+
+
+    <title>Hello, orld!</title>
+  </head>
+
+  <body>
+    <div style="display: flex; justify-content: flex-start; padding-left: 50px; padding-top: 20px; background: #bbccc3">
+      <img src="https://i.imgur.com/sgD2x60.png"/>
+        <div style="display: flex; padding-left: 200px; padding-top: 20px">
+          <div class="search">
+            <input type="text" class="searchTerm" placeholder="What are you looking for?">
+            <button type="submit" class="searchButton" >Go</button>
+        </div>
+      </div>
+    </div>
+
+    <div style="display: flex; justify-content: flex-end; padding-right: 20px; background: #bbccc3">
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+        <a href="#" class="fa fa-facebook"></a>
+        <a href="#" class="fa fa-twitter"></a>
+        <a href="#" class="fa fa-google"></a>
+        <a href="#" class="fa fa-instagram"></a>
+    </div>
+
+    <nav class="navbar navbar-expand-lg navbar-dark">
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+        <div class="navbar-nav">
+          <a class="nav-item nav-link" href="/index">Home <span class="sr-only">(current)</span></a>
+          <a class="nav-item nav-link active" href="/bestSelling">Best Selling</a>
+          <a class="nav-item nav-link" href="/items">Items A-Z</a>
+          <a class="nav-item nav-link" href="/itemType">Items By Type</a>
+        </div>
+      </div>
+      <ul class="nav navbar-nav navbar-right">
+        <li><a style="color: #fff" href="#"><span class="fas fa-user" style= "color: #fff"></span> Sign Up</a></li>
+        <li><a style="color: #fff; padding-left: 18px" href="#"><span class="fas fa-sign-in-alt" style= "color: #fff"></span> Login</a></li>
+      </ul>
+    </nav>
+
+    <!-- HTML for below navbar -->
+    <div class="card-columns" style="padding-left: 10%; padding-top: 3%; background-color: #e2e2e2">
+      {% for row in itemData %}
+      <div class="card" style="width: 18rem; height: 25rem; border-radius: 10px; border-style: thick">
+        <img class="card-img-top" src="{{ row['Thumbnail'] }}" alt="Card image cap" height=225 width=200 style="padding: 15px 15px 15px 15px">
+        <div class="card-body">
+          <h5 class="card-title">{{ row['ModelNumber'] }}</h5>
+          <p class="card-text">${{ row['Price'] }}</p>
+          <a href="/item/{{ row['ID'] }}" style="background-color: #4b664f; border-color: #182319" class="btn btn-primary">View Listing</a>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+
+
+
+
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+  </body>
+
+</html>
+
+<style>
+
+.body{
+  background-color: #e2e2e2;
+}
+
+.fa {
+  padding: 10px;
+  font-size: 25px;
+  width: 30px;
+  text-align: center;
+  text-decoration: none;
+  color: #276042;
+}
+
+
+.navbar{
+  background-color: #276042;
+  border-radius: 5px 5px 5px 5px;
+}
+
+
+/* Style for Search */
+.search {
+  width: 100%;
+  position: relative;
+  display: flex;
+}
+.searchTerm {
+  width: 550px;
+  border-right: none;
+  padding: 5px;
+  height: 45px;
+  border-radius: 5px 0 0 5px;
+  outline: none;
+  color: #v;
+}
+.searchButton {
+  width: 60px;
+  height: 45px;
+  border: 1px solid #00B4CC;
+  background: #276042;
+  text-align: center;
+  color: #fff;
+  border-radius: 0px 15px 15px 0px;
+  cursor: pointer;
+  font-size: 18px;
+}
+
+/* Style for Panel */
+.panel {
+  width: 90%;
+  height: 160px;
+  border: none;
+  border-bottom: none; 
+  border-color: #ffffff; 
+  border-radius: 25px 25px 25px 25px;
+  padding-left: 10%;
+}
+.panel > .panel-heading {
+  background-image: url("https://i.imgur.com/l3vIowP.jpg");
+  background-color: #D3D3D3;
+  color: black;
+  border-radius: 15px 15px 15px 15px;
+  height: 160px;
+  font-size: 45px;
+  text-align: right;
+  text-decoration: underline;
+  padding-top: 8%;
+  padding-right: 40%;
+}
+
+
+
+</style>

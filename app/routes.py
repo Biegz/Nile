@@ -25,13 +25,34 @@ def items():
 
 
 
-@app.route('/item/<id>')
+@app.route('/item/<id>', methods=['GET', 'POST'])
 def itemInfo(id):
 	with connection.cursor() as cursor:
 		sql = "SELECT ID, Seller, ModelNumber, Price, Thumbnail, Description, RecommendedItemID FROM Item WHERE ID = %s"
 		cursor.execute(sql,(id))
 		result = cursor.fetchall()
 	return render_template('itemInfo.html', itemInfo = result)
+
+
+@app.route('/item/<id>added')
+def addToCart(id):
+	with connection.cursor() as cursor:
+		sql1 = "SELECT ID, Seller, ModelNumber, Price, Thumbnail, Description, RecommendedItemID FROM Item WHERE ID = %s"
+		cursor.execute(sql1,(id))
+		result = cursor.fetchall()
+
+		sql2 = "INSERT INTO Cart_Temp VALUES ('0',%s)"
+		cursor.execute(sql2,(id))
+		connection.commit()
+	return render_template('itemInfoAdded.html', itemInfo = result)
+
+@app.route('/cart')
+def viewCart():
+	with connection.cursor() as cursor:
+		sql = "SELECT Item_ID, ID, Seller, ModelNumber, Price, Thumbnail, Description, RecommendedItemID FROM Item, Cart_Temp WHERE ID = Item_ID"
+		cursor.execute(sql,args=None)
+		result = cursor.fetchall()
+	return render_template('cart.html', cartInfo = result)
 
 
 

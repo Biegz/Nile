@@ -10,18 +10,18 @@
 
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
 
+
+
     <title>Nile.com: All The Gear.</title>
-
-
   </head>
 
   <body>
     <div style="display: flex; justify-content: flex-start; padding-left: 50px; padding-top: 20px; background: #bbccc3">
       <img src="https://i.imgur.com/sgD2x60.png"/>
-        <div style="display: flex; padding-left: 115px; padding-top: 20px">
-          <div class="search">
-            <input type="text" class="searchTerm" placeholder="What are you looking for?">
-            <button type="submit" class="searchButton" >Go</button>
+      <div style="display: flex; padding-left: 115px; padding-top: 20px">
+        <div class="search">
+          <input type="text" class="searchTerm" placeholder="What are you looking for?">
+          <button type="submit" class="searchButton" >Go</button>
         </div>
         <a href="/cart" id="cart" style="margin-left: 35%"><img src="https://i.imgur.com/cSs5tuA.png"></a>
       </div>
@@ -56,33 +56,28 @@
 
 
     <!-- HTML for below navbar -->
-    {% for row in itemInfo %}
-    <div class="row" style="padding: 25px 25px 25px 65px">
-      <div class="col">
-        <img src="{{ row['Thumbnail'] }}" style="max-width: 500px; max-height: 500px">
-      </div>
-      <div class="col">
-        <b><font size="6">{{ row['ModelNumber'] }}</font></b> 
-        <br>by {{ row['Seller'] }}
-        <br>  <span class="fa fa-star checked"></span>
-        <span class="fa fa-star checked"></span>
-        <span class="fa fa-star checked"></span>
-        <span class="fa fa-star"></span>
-        <span class="fa fa-star"></span>
-        <font size="2" style="margin-left: 15px">248 reviews</font>
-        <br><br><font size="2">Price: </font><font color="red">${{ row['Price'] }}</font>
-        <br><br><br> {{ row['Description'] }}
-      </div>
-      <div class="col">
-        <div class="card" ">
-          <div class="card-body"> <font color="red">${{ row['Price'] }}</font> 
-            <a href="/item/{{ row['ID'] }}added" class="btn btn-primary" style="margin-left: 45px; background-color: #5d876e; border-color: #35443b">Add to Cart</a>
-            <br><font color="green">In Stock.</font>
-          </div>
-        </div>
-      </div>
+    <div class="panel panel-default text-center">
+
+      <!-- Table -->
+      <table class="table border-bottom">
+        <th><font size="6">Shopping Cart</font></th>
+        <th>Name</th>
+        <th>Price</th>
+        {% for row in cartInfo %}
+        <tr>
+          <td><a href='#'><img src="{{ row['Thumbnail'] }}" style="max-width: 32%; max-height: 32%;"></a></td>
+          <td><a href='#'>{{row['ModelNumber']}}</a></td>
+          <td><a href='#'>${{row['Price']}}</a></td>
+        </tr>
+        {% endfor %}
+      </table>
+      <b>Subtotal: </b><font color="red">${{ cartInfo | sum(attribute='Price') | round(2) }}</font> 
     </div>
-    {% endfor %}
+
+
+
+
+
 
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
@@ -96,32 +91,76 @@
 <style>
 
 
-.img-zoom-container {
-  position: relative;
+
+
+.carousel {
+  /* any dimensions are fine, it can be responsive with max-width */
+  width: 450px; 
+  height: 350px;
+  margin: 0 auto;
+}
+.carousel-inner {
+  /* make sure your .items will get correct height */
+  height: 100%;
+
+}
+.carousel-indicators li {
+    display: inline-block;
+    width: 14px;
+    height: 14px;
+    margin: 10px;
+    text-indent: 0;
+    cursor: pointer;
+    border: none;
+    border-radius: 50%;
+    background-color: #7c7c7c;
+    box-shadow: inset 1px 1px 1px 1px rgba(0,0,0,0.5);    
+}
+.carousel-indicators .active {
+    width: 14px;
+    height: 14px;
+    margin: 10px;
+    background-color: #000;
+}
+.carousel-control-prev-icon,
+.carousel-control-next-icon {
+  height: 100px;
+  width: 100px;
+  background-size: 100%, 100%;
+  border-radius: 50%;
+  background-image: none;
+}
+.carousel-control-next-icon:after
+{
+  content: '>';
+  font-size: 55px;
+  color: black;
 }
 
-.img-zoom-lens {
-  position: absolute;
-  border: 1px solid #d4d4d4;
-  /*set the size of the lens:*/
-  width: 40px;
-  height: 40px;
-}
-
-.img-zoom-result {
-  border: 1px solid #d4d4d4;
-  /*set the size of the result div:*/
-  width: 300px;
-  height: 300px;
-}
-
-.checked {
-  color: orange;
+.carousel-control-prev-icon:after {
+  content: '<';
+  font-size: 55px;
+  color: black;
 }
 
 
 
 
+
+
+
+
+
+.item {
+  background-size: cover;
+  background-position: 50% 50%;
+  width: 100%;
+  height: 100%;
+}
+
+.item img {
+  visibility: hidden;
+}
 
 
 
@@ -181,18 +220,20 @@
   border-color: #ffffff; 
   border-radius: 25px 25px 25px 25px;
   padding-left: 10%;
+  padding-top: 15px;
+  padding-bottom: 45px;
 }
 .panel > .panel-heading {
   background-image: url("https://i.imgur.com/l3vIowP.jpg");
   background-color: #D3D3D3;
   color: black;
-  border-radius: 15px 15px 15px 15px;
+  border-radius: 15px 15px 0px 0px;
   height: 160px;
   font-size: 45px;
-  text-align: right;
+  text-align: left;
   text-decoration: underline;
   padding-top: 8%;
-  padding-right: 40%;
+  padding-left: 25px;
 }
 
 

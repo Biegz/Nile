@@ -16,15 +16,15 @@
   </head>
 
   <body>
-    <div style="display: flex; justify-content: flex-start; padding-left: 50px; padding-top: 20px; background: #bbccc3">
+    <div style="display: flex; justify-content: space-between; padding-left: 50px; padding-top: 20px; background: #bbccc3">
       <img src="https://i.imgur.com/sgD2x60.png"/>
-        <div style="display: flex; padding-left: 115px; padding-top: 20px">
-          <div class="search">
-            <input type="text" class="searchTerm" placeholder="What are you looking for?">
-            <button type="submit" class="searchButton" >Go</button>
+      <div style="display: flex; padding-top: 20px; padding-right: 10%">
+        <div class="search">
+          <input type="text" class="searchTerm" placeholder="What are you looking for?">
+          <button type="submit" class="searchButton" >Go</button>
         </div>
-        <a href="/cart" id="cart" style="margin-left: 35%"><img src="https://i.imgur.com/cSs5tuA.png"></a>
       </div>
+      <a href="/cart" id="cart" style="padding-top: 20px; padding-right: 20px"><img src="https://i.imgur.com/cSs5tuA.png"></a>
     </div>
 
     <div style="display: flex; justify-content: flex-end; padding-right: 20px; background: #bbccc3">
@@ -84,51 +84,128 @@
     </div>
     {% endfor %}
 
+
+
+    <!-- HTML for Map -->
+    <div class="row" style="padding-left: 5%; padding-bottom: 5%">
+      <div class="col">
+        <div id="map"></div>
+      </div>
+      <div class="col">
+        <font size="8" color="grey">Available at:</font>
+        <div class="vertical-menu">
+          <a href="#" id="info_div"></a>
+          {% for row in storeInfo %}
+          <input type="hidden"  id="endID" value="{{ loop.length }}">
+          <input type="hidden"  id="name{{ loop.index }}" value="{{ row['Name'] }}">
+          <input type="hidden"  id="add{{ loop.index }}" value="{{ row['Address'] }}">
+          <input type="hidden"  id="lat{{ loop.index }}" value="{{ row['Lattitude'] }}">
+          <input type="hidden"  id="lon{{ loop.index }}" value="{{ row['Longitude'] }}">
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+
+
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+
+  <script>
+  function initMap() {
+  var myMapCenter = {lat: 40.913139, lng: -73.123672};
+
+  // Create a map object and specify the DOM element for display.
+  var map = new google.maps.Map(document.getElementById('map'), {
+    center: myMapCenter,
+    zoom: 12
+  });
+
+  function markStore(storeInfo){
+    // Create a marker and set its position.
+    var marker = new google.maps.Marker({
+      map: map,
+      position: storeInfo.location,
+      title: storeInfo.name
+    });
+    // show store info when marker is clicked
+    marker.addListener('click', function(){
+      showStoreInfo(storeInfo);
+    });
+  }
+
+  // show store info in text box
+  function showStoreInfo(storeInfo){
+    var info_div = document.getElementById('info_div');
+    info_div.innerHTML = '<b>' + storeInfo.name + '</b>' + '<br><font size="4" color="grey">' + storeInfo.address + '</font>'
+      + '<br><font size="2">Open ' + storeInfo.hours + '</font>';
+  }
+
+  var stores = [];
+  var endOfLoop = Number(document.querySelector('#endID').value)+1;
+  var i;
+  for (i = 1; i < endOfLoop; i++) {
+    stores.push(      
+      {
+        name: document.querySelector('#name' + i).value,
+        location: {lat: Number(document.querySelector('#lat' + i).value), lng: Number(document.querySelector('#lon' + i).value)},
+        address: document.querySelector('#add' + i).value.substring(1, document.querySelector('#add' + i).value.length-1),
+        hours: '8AM to 10PM'
+      })
+  }
+
+  stores.forEach(function(store){
+    markStore(store);
+  });
+  }
+  </script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAzPoqKtoQ9VtTNHhxiL55btQxYEBmVCUA&callback=initMap" async defer></script>
   </body>
-
 </html>
-
 <style>
 
-
-.img-zoom-container {
-  position: relative;
-}
-
-.img-zoom-lens {
-  position: absolute;
-  border: 1px solid #d4d4d4;
-  /*set the size of the lens:*/
-  width: 40px;
-  height: 40px;
-}
-
-.img-zoom-result {
-  border: 1px solid #d4d4d4;
-  /*set the size of the result div:*/
-  width: 300px;
+/* Style for V Menu */
+.vertical-menu {
+  width: 250px;
   height: 300px;
+  overflow-y: auto;
+}
+.vertical-menu a {
+  background-color: #eee; /* Grey background color */
+  color: black; /* Black text color */
+  display: block; /* Make the links appear below each other */
+  padding: 12px; /* Add some padding */
+  text-decoration: none; /* Remove underline from links */
+}
+.vertical-menu a:hover {
+  background-color: #ccc; /* Dark grey background on mouse-over */
+}
+.vertical-menu a.active {
+  background-color: #4CAF50; /* Add a green color to the "active/current" link */
+  color: white;
 }
 
-.checked {
-  color: orange;
+
+
+/* Style for Map */
+#map{
+  width: 900px;
+  max-width: 100%;
+  height: 500px;
 }
 
 
 
-
-
-
-
+/* Style for Body */
 .body{
   background-color: #e2e2e2;
 }
 
+
+
+/* Style for Social Media Icons */
 .fa {
   padding: 10px;
   font-size: 25px;
@@ -139,10 +216,13 @@
 }
 
 
+
+/* Style for NavBar */
 .navbar{
   background-color: #276042;
   border-radius: 5px 5px 5px 5px;
 }
+
 
 
 /* Style for Search */
@@ -172,6 +252,8 @@
   font-size: 18px;
 }
 
+
+
 /* Style for Panel */
 .panel {
   width: 90%;
@@ -194,8 +276,5 @@
   padding-top: 8%;
   padding-right: 40%;
 }
-
-
-
 </style>
 
